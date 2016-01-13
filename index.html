@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Help UFO</title>
+<meta name="viewport" content="width=850, user-scalable=yes">
+<link href='http://fonts.googleapis.com/css?family=Fascinate' rel='stylesheet' type='text/css'>
+<style>
+	
+	html, body, div, span, applet, object, iframe,
+	h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+	a, abbr, acronym, address, big, cite, code,
+	del, dfn, em, img, ins, kbd, q, s, samp,
+	small, strike, strong, sub, sup, tt, var,
+	b, u, i, center,
+	dl, dt, dd, ol, ul, li,
+	fieldset, form, label, legend,
+	table, caption, tbody, tfoot, thead, tr, th, td,
+	article, aside, canvas, details, embed, 
+	figure, figcaption, footer, header, hgroup, 
+	menu, nav, output, ruby, section, summary,
+	time, mark, audio, video {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		font-size: 100%;
+		font: inherit;
+		vertical-align: baseline;
+	}
+	/* HTML5 display-role reset for older browsers */
+	article, aside, details, figcaption, figure, 
+	footer, header, hgroup, menu, nav, section {
+		display: block;
+	}
+	body {
+		line-height: 1;
+	}
+	ol, ul {
+		list-style: none;
+	}
+	blockquote, q {
+		quotes: none;
+	}
+	blockquote:before, blockquote:after,
+	q:before, q:after {
+		content: '';
+		content: none;
+	}
+	table {
+		border-collapse: collapse;
+		border-spacing: 0;
+	}
+
+
+	.title-track {
+		-moz-transform:rotate(270deg);
+		-moz-transform-origin: top right;
+		-webkit-transform:rotate(270deg);
+		-webkit-transform-origin: top right;
+		-o-transform:rotate(270deg);
+		-o-transform-origin: top right;
+		-ms-transform:rotate(270deg);
+		-ms-transform-origin: top right;
+		position:absolute;
+		top: 0px; left:0px;
+		height:100px;
+		width:500px;
+		margin-left:-500px;
+	}
+	.content {
+		width:800px;
+		height:500px;
+		margin:30px -400px 0px;
+		position: absolute;
+		left:50%;
+		transform-origin: center top;
+		-moz-transform-origin: center top;
+		-webkit-transform-origin: center top;
+		-o-transform-origin: center top;
+	}
+	
+	.mobile .content {
+		margin-top:0px;
+	}
+	
+	canvas {
+		position:absolute;
+		left: 100px;
+		width:700px;
+		height:500px;
+		z-index:1;
+		border-radius:12px;
+		border: 0px;
+	}
+	
+	.screen {
+		text-align:center;
+		transform-origin: 0 0;
+		-moz-transform-origin: 0 0;
+		-webkit-transform-origin: 0 0;
+		-o-transform-origin: 0 0;
+		border-radius: 12px;
+		position:absolute;
+		left: 100px;
+		width:700px;
+		height:500px;
+		background: rgba(0,0,0,0.5);
+		display:none;
+	}
+	
+	#start-screen {
+		z-index:2;
+		color: white;
+	}
+	
+	#loading-screen {
+		z-index:2;
+		color: white;
+	}
+	
+	#calibrate-screen {
+		z-index:3;
+		color: white;
+	}
+	
+	#black-hole-screen {
+		z-index:4;
+		color: white;
+	}
+	
+	#finish-screen {
+		z-index:4;
+		color: white;
+	}
+	
+	h2 {
+		font-size:48px;
+		margin:30px 30px 60px;
+		font-family: 'Fascinate', cursive;
+	}
+	
+	h1 {
+		font-size:56px;
+		font-family: 'Fascinate', cursive;
+		display:block;
+		position:absolute;
+		bottom:40px;
+		left: 0px;
+	}
+	
+	a.button {
+		font-family: 'Fascinate', cursive;
+		padding:20px 30px;
+		color:white;
+		font-size:24px;
+		background: rgba(0,0,0,0.7);
+		text-decoration:none;
+		border-radius:20px;
+		display:inline-block;
+		border:solid 2px rgba(255,255,255,0.7);
+	}
+	
+	a.button:hover {
+		background:rgba(255,255,255,0.2)
+	}
+	
+	#game-control {
+		font-family: 'Fascinate', cursive;
+		font-size:24px;
+		position:absolute;
+		right:0px;
+		top:0px;
+		text-align:center;
+		display:none;
+	}
+	
+	a#calibrate-pause {
+		font-family: 'Fascinate', cursive;
+		padding:15px 20px;
+		color:rgba(0,0,0,0.7);
+		font-size:24px;
+		background: rgba(0,0,0,0.1);
+		text-decoration:none;
+		border-radius:20px;
+		border:solid 2px rgba(0,0,0,0.7);
+		display:inline-block;
+		position:relative;
+		top:15px;
+	}
+	
+	a#calibrate-pause:hover {
+		color:rgba(255,255,255,0.7);
+		background: rgba(0,0,0,0.7);
+		border:solid 2px rgba(255,255,255,0.7);
+	}
+	
+	.calibrating-circle {
+		position:relative;
+		height:250px;
+	}
+	
+	.bubble {
+		background: rgba(255, 127, 0, 0.7);
+		border: solid 2px rgba(255,255,255,0.7);
+		position:absolute;
+		width:200px;
+		height:200px;
+		border-radius: 150px;
+		right:100px;
+		top:0px;
+	}
+	
+	.bubble #center-bubble {
+		border-radius: 20px;
+		width: 16px;
+		height: 16px;
+		border: solid 2px rgba(255,255,255,0.7);
+		position:absolute;
+		top:92px;
+		left:92px;
+	}
+	
+	.bubble #current-bubble {
+		border-radius: 20px;
+		width: 16px;
+		height: 16px;
+		border: solid 2px rgba(255,255,255,0.7);
+		background: rgba(255,255,255,0.8);
+		position:absolute;
+		top:92px;
+		left:92px;
+	}
+	
+	.bubble-menu {
+		position:absolute;
+		left: 50px;
+		top: 0px;
+		width:270px;	
+	}
+	.bubble-menu a {
+		display:block;
+		font-size:20px;
+		margin-bottom:5px;
+	}
+	
+	#bh-container {
+		position:absolute;
+		top:250px;
+		left:150px;
+		width:200px;
+		text-align:center;
+		font-family: 'Fascinate', cursive;
+	}
+	
+	#pl-container {
+		position:absolute;
+		top:250px;
+		right:150px;
+		width:200px;
+		text-align:center;
+		font-family: 'Fascinate', cursive;
+	}
+	
+	#black-hole {
+		width: 120px;
+		height: 120px;
+		top:50px;
+		left:40px;
+	}
+	
+	#planet {
+		width:60px;
+		height:60px;
+		top:65px;
+		left:70px;
+	}
+	
+	@media all and (orientation:portrait) {
+		#orientation-handler {
+			width:2px;
+		}
+	}
+	
+	@media all and (orientation:landscape) {
+		#orientation-handler {
+			width:1px;
+		}
+	}
+	
+	#loaded-elements, .author {
+		font-family: 'Fascinate', cursive;
+	}
+	
+	.author {
+		display:block;
+		position:absolute;
+		bottom:11px;
+	}
+	
+	.author a {
+		color:#333333;
+		text-decoration: none;
+	}
+	
+	.author a:hover {
+		text-decoration: underline;
+	}
+	
+</style>
+</head>
+<body>
+<div class="content" id="content">
+	<div class="title-track">
+		<h1>Help UFO</h1>
+		<p class="author"><a href="http://michal.biniek.pl" onclick="window.open(this.href); return false;">by Michal Biniek</a></p>
+		<div id="game-control">
+			<div>Level: <span id="level">1</span></div>
+			<a href="#" id="calibrate-pause">Calibrate</a>
+		</div>
+	</div>
+	<div id="start-screen" class="screen">
+		<h2>Help UFO</h2>
+		<a href="#" class="button" id="start">Start</a>
+		<a href="#" class="button" id="calibrate">Calibrate</a>
+		<div id="bh-container">
+			<p>Avoid black holes</p>
+			<canvas id="black-hole" width="120" height="120"></canvas>
+		</div>
+		
+		<div id="pl-container">
+			<p>Reach the planet</p>
+			<canvas id="planet" width="60" height="60"></canvas>
+		</div>
+	</div>
+	<div id="loading-screen" class="screen">
+		<h2>Loading</h2>
+		<div id="loaded-elements"></div>
+	</div>
+	<div id="calibrate-screen" class="screen">
+		<h2>Calibrate</h2>
+		
+		<div class="calibrating-circle">
+			
+			<div class="bubble">
+				<div id="center-bubble"></div>
+				<div id="current-bubble"></div>
+			</div>
+			<div class="bubble-menu">
+				<a href="#" id="switchXY" class="button">Change X and Y</a>
+				<a href="#" id="reverseX" class="button">Reverse X</a>
+				<a href="#" id="reverseY" class="button">Reverse Y</a>
+			</div>
+		</div>
+		
+		<a href="#" id="center" class="button">Set as a center</a>
+		<a href="#" id="calibrating-play" class="button">Play</a>
+	</div>
+	<div id="black-hole-screen" class="screen">
+		<h2>GAME OVER</h2>
+		<a href="#" id="again" class="button">Try again</a>
+	</div>
+	<div id="finish-screen" class="screen">
+		<h2>GAME FINISHED</h2>
+		<a href="#" id="restart" class="button">Restart</a>
+		<a href="#" id="back-to-start-screen" class="button">Back to start screen</a>
+	</div>
+	<canvas id="canvas" width="800" height="600"></canvas>
+	<div id="orientation-handler"></div>
+</div>
+
+
+<script src="script.js">
+
+</script>
+</body>
+</html>
